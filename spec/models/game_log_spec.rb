@@ -25,18 +25,21 @@ RSpec.describe GameLog, type: :model do
   describe 'Fetching info from log' do
 	  context '#get_killer_name' do
 	  	it 'should return Lion' do
+	  		game_log.kill_attributes
 		  	expect(game_log.get_killer_name).to eq 'Lion'
 		  end
 	  end
 
 	  describe '#get_victim_name' do
 	  	it 'should return Isgalamido' do
+	  		game_log.kill_attributes
 		  	expect(game_log.get_victim_name).to eq 'Isgalamido'
 		  end
 	  end
 
 	  describe '#get_method' do
 	  	it 'should return Lion' do
+	  		game_log.kill_attributes
 		  	expect(game_log.get_method).to eq 'MOD_TRIGGER_HURT'
 		  end
 	  end

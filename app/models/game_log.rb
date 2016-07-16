@@ -32,17 +32,17 @@ class GameLog
 		@log.match(/(?<=by )(.*)/).to_s
 	end
 
-  def create_kill(game)
-  	attributes = kill_attributes
-  end
+	def create_kill(game)
+		attributes = kill_attributes
+	end
 
 	def get_killer_with(name, game)
-  	killer = Player.find_by_name(name)
-  	killer ? killer : Player.create({ name: name, game: game })
+		killer = Player.find_by_name(name)
+		killer ? killer : Player.create({ name: name, game: game })
 	end
 
 	def get_victim_with(name, game)
-  	victim = Player.find_by_name(name)
-  	victim ? victim : Player.create({ name: name, game: game })
+		victim = Player.find_by_name(name)
+		victim ? victim : Player.create({ name: name, game: game })
 	end  	
 end

@@ -26,9 +26,8 @@ class KillsController < ApplicationController
 
   def details_for(kill)
   	{ 
-  		killer: kill.killer.name,
-  		victim: kill.victim.name,
-  		method: kill.method
+  		killer: kill.killer.name, victim: kill.victim.name,
+  		method: kill.method, game_id: kill.game.id
   	}
   end
 end

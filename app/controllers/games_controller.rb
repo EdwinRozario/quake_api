@@ -25,6 +25,34 @@ class GamesController < ApplicationController
     render json: response
   end
 
+  def kill_modes
+    unless params[:game_id] == 'nill'
+      game = Game.find_by_id(params[:game_id])
+      response = game.nil? ? { message: "Game with #{params[:game_id]} dosent exist" } : kill_modes_for(game)
+    else
+      response = {}
+      Game.all.each do |game|
+        response["game-#{game.id}"] = kill_modes_for(game)
+      end
+    end
+
+    render json: response    
+  end
+
+  def kill_modes_for(game)
+    kills_by_means = {}
+    
+    game.kills.each do |kill|
+      if kills_by_means.has_key? kill.method
+        kills_by_means[kill.method] += 1
+      else
+        kills_by_means[kill.method] = 1
+      end
+    end
+
+    kills_by_means
+  end
+
   def details_for(game)
     player_kills = game.real_players.map { |player| [player.name, 
                                        player.kills.where(game: game).count]

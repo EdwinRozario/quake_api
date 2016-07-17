@@ -44,7 +44,11 @@ class GameLog
   end
 
   def get_killer_with(name, game)
-    killer = Player.where(name: name, game: game)
+    killer = Player.find_by_name(name)
+    if killer
+    end
+
+
     killer.empty? ? Player.create({ name: name, game: game }) : killer.first
   end
 

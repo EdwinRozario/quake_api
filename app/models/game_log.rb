@@ -36,24 +36,23 @@ class GameLog
     attributes = kill_attributes
 
     Kill.create({
-      killer: get_killer_with(attributes[:killer], game),
-      victim: get_victim_with(attributes[:victim], game),
+      killer: get_player_with(attributes[:killer], game),
+      victim: get_player_with(attributes[:victim], game),
       method: kill_attributes[:method],
       game: game
     })    
   end
 
-  def get_killer_with(name, game)
+  def get_player_with(name, game)
     killer = Player.find_by_name(name)
     if killer
+      unless game.players.include? killer
+        GamePlayer.create(game: game, player: killer)
+      end
+    else
+      killer = Player.create(name: name)
+      GamePlayer.create(game: game, player: killer)
     end
-
-
-    killer.empty? ? Player.create({ name: name, game: game }) : killer.first
+    killer
   end
-
-  def get_victim_with(name, game)
-    victim = Player.where(name: name, game: game)
-    victim.empty? ? Player.create({ name: name, game: game }) : victim.first
-  end   
 end

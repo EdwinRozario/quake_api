@@ -18,23 +18,22 @@ class GamesController < ApplicationController
   end
 
   def details
-    game = Game.find_by_id(params[:id])
+    game = Game.find_by_id(params[:game_id])
 
-    response = {
-                id: game.id,
-                total_kills: game.kills.count,
-                players: game.players.map(&)
+    response = game.nil? ? { message: "Game with #{params[:game_id]} dosent exist" } : details_for(game)
 
-               }
+    render json: response
+  end
+
+  def details_for(game)
+    player_kills = game.real_players.map { |player| [player.name, 
+                                       player.kills.where(game: game).count]
+                                     }
+    {
+      id: game.id,
+      total_kills: game.kills.count,
+      players: game.real_players.map(&:name),
+      kills: Hash[*player_kills.flatten]
+     }    
   end
 end
-
-    # game_1: {
-    #     total_kills: 45;
-    #     players: ["Dono da bola", "Isgalamido", "Zeh"]
-    #     kills: {
-    #       "Dono da bola": 5,
-    #       "Isgalamido": 18,
-    #       "Zeh": 20
-    #     }
-    #   }

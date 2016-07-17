@@ -14,12 +14,12 @@ class GamesController < ApplicationController
   def show
     game = Game.find_by_id(params[:id])
     response = game ? game : { message: "Game with #{params[:id]} dosent exist" }
+    
     render json: response
   end
 
   def details
     game = Game.find_by_id(params[:game_id])
-
     response = game.nil? ? { message: "Game with #{params[:game_id]} dosent exist" } : details_for(game)
 
     render json: response

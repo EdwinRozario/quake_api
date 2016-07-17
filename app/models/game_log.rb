@@ -44,12 +44,12 @@ class GameLog
   end
 
   def get_killer_with(name, game)
-    killer = Player.find_by_name(name)
-    killer ? killer : Player.create({ name: name, game: game })
+    killer = Player.where(name: name, game: game)
+    killer.empty? ? Player.create({ name: name, game: game }) : killer.first
   end
 
   def get_victim_with(name, game)
-    victim = Player.find_by_name(name)
-    victim ? victim : Player.create({ name: name, game: game })
+    victim = Player.where(name: name, game: game)
+    victim.empty? ? Player.create({ name: name, game: game }) : victim.first
   end   
 end

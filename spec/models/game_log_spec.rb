@@ -58,7 +58,7 @@ RSpec.describe GameLog, type: :model do
     describe '#create_kill' do
       it 'shoudl create a Kill' do
         expect(Kill).to receive(:create)
-      game_log.create_kill
+        game_log.create_kill(game)
     end
   end
 end

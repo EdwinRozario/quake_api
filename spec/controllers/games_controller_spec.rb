@@ -26,7 +26,7 @@ RSpec.describe GamesController, type: :controller do
   end
 
   describe '#details' do
-    let(:game) { FactoryGirl.build(:game) }
+    let(:game) { FactoryGirl.create(:game) }
 
     it 'should get the game with id' do
       expect(Game).to receive(:find_by_id).with('1')
@@ -34,25 +34,23 @@ RSpec.describe GamesController, type: :controller do
     end
 
     it 'should call details_for' do
-      allow(Game).to receive(:find_by_id).and_return(game)
-      expect(controller).to receive(:details_for).with(game) 
-      get :details, game_id: 1
+      expect(controller).to receive(:details_for).with(game)
+      get :details, game_id: game.id
     end    
   end
 
   describe '#kill_modes' do
-    let(:game) { FactoryGirl.build(:game) }
+    let(:game) { FactoryGirl.create(:game) }
     
     context 'when id passed' do
       it 'should get the game with id' do
-        expect(Game).to receive(:find_by_id).with('1')
-        get :kill_modes, game_id: 1 
+        expect(Game).to receive(:find_by_id).with("#{game.id}")
+        get :kill_modes, game_id: game.id
       end
 
       it 'should call kill_modes_for' do
-        allow(Game).to receive(:find_by_id).and_return(game)
         expect(controller).to receive(:kill_modes_for).with(game)
-        get :kill_modes, game_id: 1
+        get :kill_modes, game_id: game.id
       end        
     end
 

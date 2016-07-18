@@ -15,7 +15,16 @@ RSpec.describe GamesController, type: :controller do
       expect(Game).to receive(:first)
       expect(Game).to receive(:last)
       get :index
-    end    
+    end
+
+    it 'should get the first and last games' do
+      game = FactoryGirl.create(:game)
+      allow(Game).to receive(:first).and_return(game)
+      allow(Game).to receive(:last).and_return(game)
+
+      get :index
+      expect(response.body).to eq ({ count: 1, first_id: game.id, last_id: game.id }.to_json)
+    end         
   end
 
   describe '#show' do
@@ -23,6 +32,17 @@ RSpec.describe GamesController, type: :controller do
       expect(Game).to receive(:find_by_id).with('1')
       get :show, id: 1 
     end
+
+    it 'should return error when game id dosent exist' do
+      get :show, id: 1000
+      expect(response.body).to eq ({ message: 'Game with 1000 dosent exist' }.to_json)
+    end
+
+    it 'should return json for a game if exist' do
+      game = FactoryGirl.create(:game)
+      get :show, id: game.id
+      expect(response.body).to eq ({ id: game.id, created_at: game.created_at, updated_at: game.updated_at }.to_json)
+    end    
   end
 
   describe '#details' do
@@ -36,7 +56,13 @@ RSpec.describe GamesController, type: :controller do
     it 'should call details_for' do
       expect(controller).to receive(:details_for).with(game)
       get :details, game_id: game.id
-    end    
+    end
+
+    it 'should respond details of the kill' do
+      game = FactoryGirl.create(:game)
+      get :details, game_id: game.id
+      expect(response.body).to eq ({id: game.id, total_kills: 0, players: [], kills: {}}.to_json)
+    end         
   end
 
   describe '#kill_modes' do
@@ -51,7 +77,14 @@ RSpec.describe GamesController, type: :controller do
       it 'should call kill_modes_for' do
         expect(controller).to receive(:kill_modes_for).with(game)
         get :kill_modes, game_id: game.id
-      end        
+      end
+
+      it 'should call kill_modes_for' do
+        game = FactoryGirl.create(:game)
+        allow(Game).to receive(:all).and_return([game])
+        get :kill_modes, game_id: 'nill'
+        expect(response.body).to eq ({"game-#{game.id}": {}}.to_json)
+      end               
     end
 
     context 'when id not passed but nill' do

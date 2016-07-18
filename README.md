@@ -19,7 +19,7 @@ Setup
 > - bundle exec rake db:migrate
 > - bundle exec rake parser:load
 > This will parse the quake log file which is in db/data/ and load it to the database.
-> bundle exec rails s
+> - bundle exec rails s
 > Now you must have the quake_api running in port 3000
 
 > **quake_dashboard**

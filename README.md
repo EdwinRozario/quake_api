@@ -32,6 +32,7 @@ Setup
 > - ```bundle exec dashing start```
 > This will run the dashboard server in 3030.
 > - Watch localhost:3030 for the visualisation of the game logs 
+> This dashboard depends on quake_api.
 
 > **quake_cli**
 > 
